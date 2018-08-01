@@ -1,0 +1,57 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!-- Regular spec from design guidelines is from left
+         16 dp space
+         + 24 dp icon (nav drawer)
+         + 32 space
+         + text of title
+         since the image indicating the title so we make it 16 dp
+         as there is no icon ( like default behaviour of actionbar )
+         Also note for tablet it is 24 + 24 + 32, so take 24
+         -->
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        android:layout_marginLeft="@dimen/list_toolbar_side_margin"
+        android:layout_marginRight="@dimen/list_toolbar_side_margin"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+
+        android:background="?colorPrimary"
+
+        app:contentInsetStart="@dimen/toolbar_content_inset_start"
+        android:elevation="@dimen/toolbar_elevation"
+        tools:ignore="UnusedAttribute">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/logo"
+            android:contentDescription="@string/app_name" />
+
+    </android.support.v7.widget.Toolbar>
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+            android:clipToPadding="true"
+            android:scrollbarStyle="outsideOverlay"
+
+            android:padding="8dp"/>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+</LinearLayout>
