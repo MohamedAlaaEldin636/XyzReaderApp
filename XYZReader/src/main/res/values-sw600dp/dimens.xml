@@ -1,9 +1,10 @@
 <resources>
 
     <!-- activity_article_list.xml -->
-    <dimen name="toolbar_elevation">4dp</dimen>
-    <dimen name="article_recycler_view_padding">16dp</dimen>
     <dimen name="toolbar_content_inset_start">24dp</dimen>
+
+    <!-- list_item_article_2.xml -->
+    <dimen name="item_margin">8dp</dimen>
 
     <!-- detail -->
     <dimen name="detail_title_text_size">42sp</dimen>

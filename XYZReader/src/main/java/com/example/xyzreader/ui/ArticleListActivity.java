@@ -1,5 +1,6 @@
 package com.example.xyzreader.ui;
 
+import android.annotation.SuppressLint;
 import android.app.LoaderManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -7,9 +8,16 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.Loader;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
@@ -20,12 +28,24 @@ import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.DrawableImageViewTarget;
+import com.bumptech.glide.request.target.ImageViewTarget;
+import com.bumptech.glide.request.target.Target;
 import com.example.xyzreader.R;
 import com.example.xyzreader.data.ArticleLoader;
 import com.example.xyzreader.data.ItemsContract;
 import com.example.xyzreader.data.UpdaterService;
+import com.example.xyzreader.utils.GeneralAppHelper;
+import com.example.xyzreader.utils.PaletteUtils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -37,9 +57,23 @@ import java.util.GregorianCalendar;
  * handset and tablet-size devices. On handsets, the activity presents a list of items, which when
  * touched, lead to a {@link ArticleDetailActivity} representing item details. On tablets, the
  * activity presents a grid of items as cards.
+ *
+ * ==> All Below Not in starter code
+ *
+ * ==> Flow
+ * 1- on activity launch (savedInstance == null only) we fetch data from internet and save it
+ * in database plus in onCreate() (same place) we initialize the loader to get data from
+ * the database and update the ui, by adding data to adapter and setting adapter to recyclerView.
+ *
+ * ==> Notes
+ * 1- this is not my code, My job here only is to make UI better, I said that because the pattern
+ *      of code here isn't organized, and almost spaghetti code
+ *      ( for ex. we should 've made separate class for recyclerView's adapter )
  */
+@SuppressLint("SimpleDateFormat")
 public class ArticleListActivity extends AppCompatActivity implements
-        LoaderManager.LoaderCallbacks<Cursor> {
+        LoaderManager.LoaderCallbacks<Cursor> ,
+        SwipeRefreshLayout.OnRefreshListener {
 
     private static final String TAG = ArticleListActivity.class.toString();
     private SwipeRefreshLayout mSwipeRefreshLayout;
@@ -51,41 +85,54 @@ public class ArticleListActivity extends AppCompatActivity implements
     // Most time functions can only handle 1902 - 2037
     private GregorianCalendar START_OF_EPOCH = new GregorianCalendar(2,1,1);
 
+    private LinearLayout emptyViewLinearLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_article_list);
 
+        // init views
+        mSwipeRefreshLayout = findViewById(R.id.swipe_refresh_layout);
+        mRecyclerView = findViewById(R.id.recycler_view);
+        emptyViewLinearLayout = findViewById(R.id.emptyViewLinearLayout);
 
-        //final View toolbarContainerView = findViewById(R.id.toolbar_container);
+        // setup views
+        mSwipeRefreshLayout.setOnRefreshListener(this);
 
-        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
-
-        mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-        getLoaderManager().initLoader(0, null, this);
-
+        // load data from internet, then save it in database.
         if (savedInstanceState == null) {
-            // get data from internet
             refresh();
         }
+
+        // load data from database.
+        getLoaderManager().initLoader(0, null, this);
     }
+
+    // ---- Private Global Helper Methods
 
     private void refresh() {
         startService(new Intent(this, UpdaterService.class));
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        registerReceiver(mRefreshingReceiver,
-                new IntentFilter(UpdaterService.BROADCAST_ACTION_STATE_CHANGE));
-    }
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    //
+    //      SwipeRefreshLayout.OnRefreshListener Implemented Methods
+    //
+    ////////////////////////////////////////////////////////////////////////////////////////////////
 
     @Override
-    protected void onStop() {
-        super.onStop();
-        unregisterReceiver(mRefreshingReceiver);
+    public void onRefresh() {
+        refresh();
+
+        //getLoaderManager().initLoader(0, null, this);
     }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    //
+    //      Broadcast Receiver result from UpdaterService class
+    //
+    ////////////////////////////////////////////////////////////////////////////////////////////////
 
     private boolean mIsRefreshing = false;
 
@@ -103,6 +150,31 @@ public class ArticleListActivity extends AppCompatActivity implements
         mSwipeRefreshLayout.setRefreshing(mIsRefreshing);
     }
 
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    //
+    //      Overridden Activity Methods
+    //
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        registerReceiver(mRefreshingReceiver,
+                new IntentFilter(UpdaterService.BROADCAST_ACTION_STATE_CHANGE));
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        unregisterReceiver(mRefreshingReceiver);
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    //
+    //      Loader ( to get data from database )
+    //
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
         return ArticleLoader.newAllArticlesInstance(this);
@@ -110,13 +182,24 @@ public class ArticleListActivity extends AppCompatActivity implements
 
     @Override
     public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
-        Adapter adapter = new Adapter(cursor);
-        adapter.setHasStableIds(true);
-        mRecyclerView.setAdapter(adapter);
-        int columnCount = getResources().getInteger(R.integer.list_column_count);
-        StaggeredGridLayoutManager sglm =
-                new StaggeredGridLayoutManager(columnCount, StaggeredGridLayoutManager.VERTICAL);
-        mRecyclerView.setLayoutManager(sglm);
+        if (! mIsRefreshing){
+            if (cursor.getCount() == 0){
+                emptyViewLinearLayout.setVisibility(View.VISIBLE);
+            }else {
+                emptyViewLinearLayout.setVisibility(View.GONE);
+            }
+        }
+
+        /*Adapter adapter = new Adapter(cursor);
+        adapter.setHasStableIds(true);*/
+        CustomAdapter customAdapter = new CustomAdapter(cursor);
+        customAdapter.setHasStableIds(true);
+
+        int columnCount = getResources().getInteger(R.integer.list_number_of_columns);
+        GridLayoutManager layoutManager = new GridLayoutManager(
+                this, columnCount, LinearLayoutManager.VERTICAL, false);
+        mRecyclerView.setLayoutManager(layoutManager);
+        mRecyclerView.setAdapter(customAdapter/*adapter*/);
     }
 
     @Override
@@ -124,10 +207,16 @@ public class ArticleListActivity extends AppCompatActivity implements
         mRecyclerView.setAdapter(null);
     }
 
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    //
+    //      Recycler View's Adapter
+    //
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+
     private class Adapter extends RecyclerView.Adapter<ViewHolder> {
         private Cursor mCursor;
 
-        public Adapter(Cursor cursor) {
+        Adapter(Cursor cursor) {
             mCursor = cursor;
         }
 
@@ -137,8 +226,9 @@ public class ArticleListActivity extends AppCompatActivity implements
             return mCursor.getLong(ArticleLoader.Query._ID);
         }
 
+        @NonNull
         @Override
-        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View view = getLayoutInflater().inflate(R.layout.list_item_article, parent, false);
             final ViewHolder vh = new ViewHolder(view);
             view.setOnClickListener(new View.OnClickListener() {
@@ -163,7 +253,7 @@ public class ArticleListActivity extends AppCompatActivity implements
         }
 
         @Override
-        public void onBindViewHolder(ViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             mCursor.moveToPosition(position);
             holder.titleView.setText(mCursor.getString(ArticleLoader.Query.TITLE));
             Date publishedDate = parsePublishedDate();
@@ -182,6 +272,7 @@ public class ArticleListActivity extends AppCompatActivity implements
                         + "<br/>" + " by "
                         + mCursor.getString(ArticleLoader.Query.AUTHOR)));
             }
+            // todo use glide instead and set the card's bg as well
             holder.thumbnailView.setImageUrl(
                     mCursor.getString(ArticleLoader.Query.THUMB_URL),
                     ImageLoaderHelper.getInstance(ArticleListActivity.this).getImageLoader());
@@ -194,16 +285,154 @@ public class ArticleListActivity extends AppCompatActivity implements
         }
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        public DynamicHeightNetworkImageView thumbnailView;
-        public TextView titleView;
-        public TextView subtitleView;
+    static class ViewHolder extends RecyclerView.ViewHolder {
+        DynamicHeightNetworkImageView thumbnailView;
+        TextView titleView;
+        TextView subtitleView;
 
-        public ViewHolder(View view) {
+        ViewHolder(View view) {
             super(view);
-            thumbnailView = (DynamicHeightNetworkImageView) view.findViewById(R.id.thumbnail);
-            titleView = (TextView) view.findViewById(R.id.article_title);
-            subtitleView = (TextView) view.findViewById(R.id.article_subtitle);
+            thumbnailView = view.findViewById(R.id.thumbnail);
+            titleView = view.findViewById(R.id.article_title);
+            subtitleView = view.findViewById(R.id.article_subtitle);
+        }
+    }
+
+    private class CustomAdapter extends RecyclerView.Adapter<CustomViewHolder> {
+        private Cursor mCursor;
+
+        CustomAdapter(Cursor cursor) {
+            mCursor = cursor;
+        }
+
+        @Override
+        public long getItemId(int position) {
+            mCursor.moveToPosition(position);
+            return mCursor.getLong(ArticleLoader.Query._ID);
+        }
+
+        @NonNull
+        @Override
+        public CustomViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            View view = getLayoutInflater().inflate(
+                    R.layout.list_item_article_2, parent, false);
+
+            final CustomViewHolder holder = new CustomViewHolder(view);
+
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    startActivity(new Intent(Intent.ACTION_VIEW,
+                            ItemsContract.Items.buildItemUri(getItemId(holder.getAdapterPosition()))));
+                }
+            });
+
+            return holder;
+        }
+
+        private Date parsePublishedDate() {
+            try {
+                String date = mCursor.getString(ArticleLoader.Query.PUBLISHED_DATE);
+                return dateFormat.parse(date);
+            } catch (ParseException ex) {
+                Log.e(TAG, ex.getMessage());
+                Log.i(TAG, "passing today's date");
+                return new Date();
+            }
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull final CustomViewHolder holder, int position) {
+            mCursor.moveToPosition(position);
+            holder.titleView.setText(mCursor.getString(ArticleLoader.Query.TITLE));
+            Date publishedDate = parsePublishedDate();
+            if (!publishedDate.before(START_OF_EPOCH.getTime())) {
+
+                holder.subtitleView.setText(Html.fromHtml(
+                        DateUtils.getRelativeTimeSpanString(
+                                publishedDate.getTime(),
+                                System.currentTimeMillis(), DateUtils.HOUR_IN_MILLIS,
+                                DateUtils.FORMAT_ABBREV_ALL).toString()
+                                + "<br/>" + " by "
+                                + mCursor.getString(ArticleLoader.Query.AUTHOR)));
+            } else {
+                holder.subtitleView.setText(Html.fromHtml(
+                        outputFormat.format(publishedDate)
+                                + "<br/>" + " by "
+                                + mCursor.getString(ArticleLoader.Query.AUTHOR)));
+            }
+            /*
+            ==> Flow
+            1- make background of cardView as dominant or vibrant or defaultColor and change
+                    texts colors accordingly.
+            2-
+             */
+            // todo use glide instead and set the card's bg as well
+            /*holder.thumbnailView.setImageUrl(
+                    mCursor.getString(ArticleLoader.Query.THUMB_URL),
+                    ImageLoaderHelper.getInstance(ArticleListActivity.this).getImageLoader());
+            holder.thumbnailView.setAspectRatio(mCursor.getFloat(ArticleLoader.Query.ASPECT_RATIO));*/
+            RequestOptions requestOptions = new RequestOptions()
+                    .placeholder(R.drawable.ic_loading)
+                    .error(R.drawable.ic_baseline_error_24px)/*
+                    .centerInside()*/;
+            Glide.with(getBaseContext())
+                    .asBitmap()
+                    .load(mCursor.getString(ArticleLoader.Query.THUMB_URL))
+                    .apply(requestOptions)
+                    .listener(new RequestListener<Bitmap>() {
+                        @Override
+                        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Bitmap> target, boolean isFirstResource) {
+                            holder.thumbnailImageView.setScaleType(
+                                    ImageView.ScaleType.FIT_CENTER);
+
+                            return false;
+                        }
+
+                        @Override
+                        public boolean onResourceReady(Bitmap resource, Object model, Target<Bitmap> target, DataSource dataSource, boolean isFirstResource) {
+                            holder.thumbnailImageView.setScaleType(
+                                    ImageView.ScaleType.CENTER_CROP);
+
+                            GeneralAppHelper.setBackgroundAndTexts(
+                                    resource,
+                                    holder.titleView,
+                                    holder.subtitleView,
+                                    holder.cardView,
+                                    Color.WHITE,
+                                    getBaseContext());
+                            return false;
+                        }
+                    })
+                    .into(holder.thumbnailImageView);
+                    /*.into(new ImageViewTarget<Bitmap>(holder.thumbnailImageView) {
+                        @Override
+                        protected void setResource(@Nullable Bitmap resource) {
+
+                        }
+                    });*/
+        }
+
+        @Override
+        public int getItemCount() {
+            return mCursor.getCount();
+        }
+    }
+
+    static class CustomViewHolder extends RecyclerView.ViewHolder {
+
+        CardView cardView;
+        ImageView thumbnailImageView;
+        TextView titleView;
+        TextView subtitleView;
+
+        CustomViewHolder(View view) {
+            super(view);
+
+            cardView = view.findViewById(R.id.itemCardView);
+            thumbnailImageView = view.findViewById(R.id.thumbnailImageView);
+            titleView = view.findViewById(R.id.article_title);
+            subtitleView = view.findViewById(R.id.article_subtitle);
         }
     }
 }

@@ -2,8 +2,11 @@
 
     <!-- activity_article_list.xml -->
     <dimen name="toolbar_elevation">4dp</dimen>
-    <dimen name="article_recycler_view_padding">8dp</dimen>
     <dimen name="toolbar_content_inset_start">16dp</dimen>
+    <dimen name="list_toolbar_margin">0dp</dimen>
+
+    <!-- list_item_article_2.xml -->
+    <dimen name="item_margin">4dp</dimen>
 
     <!-- detail -->
     <dimen name="detail_title_text_size">32sp</dimen>

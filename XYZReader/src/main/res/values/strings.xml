@@ -9,4 +9,11 @@
 
     <string name="up">Up</string>
 
+    <!-- activity_article_list.xml -->
+    <string name="no_internet_connection">No Internet Connection</string>
+    <string name="swipe_from_up_to_down_to_refresh">Swipe from up to down to refresh</string>
+
+    <!-- list_item_article_2.xml -->
+    <string name="thumbnail_image_view_content_description">Image</string>
+
 </resources>

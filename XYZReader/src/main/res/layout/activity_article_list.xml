@@ -18,8 +18,7 @@
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        android:layout_marginLeft="@dimen/list_toolbar_side_margin"
-        android:layout_marginRight="@dimen/list_toolbar_side_margin"
+        android:layout_margin="@dimen/list_toolbar_margin"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
 
@@ -42,15 +41,49 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycler_view"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="match_parent">
 
-            android:clipToPadding="true"
-            android:scrollbarStyle="outsideOverlay"
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
 
-            android:padding="8dp"/>
+                android:clipToPadding="true"
+                android:scrollbarStyle="outsideOverlay"/>
+
+            <LinearLayout
+                android:id="@+id/emptyViewLinearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/white"
+
+                android:gravity="center"
+
+                android:orientation="vertical"
+
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/white"
+
+                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                    android:text="@string/no_internet_connection"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/white"
+
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:text="@string/swipe_from_up_to_down_to_refresh"/>
+
+            </LinearLayout>
+
+        </FrameLayout>
 
     </android.support.v4.widget.SwipeRefreshLayout>
 
