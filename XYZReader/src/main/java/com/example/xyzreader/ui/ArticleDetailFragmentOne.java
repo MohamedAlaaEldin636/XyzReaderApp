@@ -55,10 +55,12 @@ public class ArticleDetailFragmentOne extends android.app.Fragment implements
     private static final String TAG = "ArticleDetFragOne";
 
     public static final String ARG_ITEM_ID = "item_id";
+    public static final String ARG_ITEM_TITLE = "ARG_ITEM_TITLE";
 
     private Cursor mCursor;
 
     private long mItemId;
+    private String mItemTitle;
 
     private View mRootView;
 
@@ -83,12 +85,23 @@ public class ArticleDetailFragmentOne extends android.app.Fragment implements
         return fragment;
     }
 
+    public static ArticleDetailFragmentOne newInstance(String itemTitle) {
+        Bundle arguments = new Bundle();
+        arguments.putString(ARG_ITEM_TITLE, itemTitle);
+        ArticleDetailFragmentOne fragment = new ArticleDetailFragmentOne();
+        fragment.setArguments(arguments);
+        return fragment;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null && getArguments().containsKey(ARG_ITEM_ID)) {
             mItemId = getArguments().getLong(ARG_ITEM_ID);
+        }
+        if (getArguments() != null && getArguments().containsKey(ARG_ITEM_TITLE)) {
+            mItemTitle = getArguments().getString(ARG_ITEM_TITLE);
         }
     }
 
@@ -237,7 +250,11 @@ public class ArticleDetailFragmentOne extends android.app.Fragment implements
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
-        return ArticleLoader.newInstanceForItemId(getActivity(), mItemId);
+        if (mItemTitle != null && ! mItemTitle.isEmpty()){
+            return ArticleLoader.newInstanceForItemId(getActivity(), mItemTitle);
+        }else {
+            return ArticleLoader.newInstanceForItemId(getActivity(), mItemId);
+        }
     }
 
     @Override
@@ -248,6 +265,8 @@ public class ArticleDetailFragmentOne extends android.app.Fragment implements
             }
             return;
         }
+
+        Log.e("very", "CALLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLED + " + cursor.getCount() + "\nisaAdded == " + isAdded());
 
         mCursor = cursor;
         if (mCursor != null){

@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.v13.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 
@@ -97,6 +98,8 @@ public class ArticleDetailActivityOne extends AppCompatActivity
         mCursor = cursor;
         pagerAdapter.notifyDataSetChanged();
 
+        Log.e("HUGE TAG", "CURSOR COUNT == " + mCursor.getCount());
+
         // Select the start ID
         if (mStartId > 0) {
             if (mStarterTitle != null && ! mStarterTitle.isEmpty()){
@@ -104,6 +107,7 @@ public class ArticleDetailActivityOne extends AppCompatActivity
                 while (!mCursor.isAfterLast()) {
                     if (mCursor.getString(ArticleLoader.Query.TITLE).equals(mStarterTitle)) {
                         final int position = mCursor.getPosition();
+                        Log.e("NORMAL TAG", "STARTER TITLE == " + mStarterTitle);
                         viewPager.setCurrentItem(position, false);
                         break;
                     }
@@ -139,7 +143,8 @@ public class ArticleDetailActivityOne extends AppCompatActivity
         @Override
         public Fragment getItem(int position) {
             mCursor.moveToPosition(position);
-            return ArticleDetailFragmentOne.newInstance(mCursor.getLong(ArticleLoader.Query._ID));
+            Log.e("HTYUIVCD", "long Id = " + mCursor.getString(ArticleLoader.Query.TITLE));
+            return ArticleDetailFragmentOne.newInstance(mCursor.getString(ArticleLoader.Query.TITLE));
         }
 
         @Override
