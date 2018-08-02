@@ -14,23 +14,23 @@ In this project, you will redesign an app to follow the Material Design guidelin
 ### Old Main Layout
 
 <img src="https://github.com/MohamedAlaaEldin636/XyzReaderApp/blob/master/forReadMeFiles/old-port-main.png" height="500"/>
-<img src="https://github.com/MohamedAlaaEldin636/XyzReaderApp/blob/master/forReadMeFiles/old-land-main.png" height="500"/>
+<img src="https://github.com/MohamedAlaaEldin636/XyzReaderApp/blob/master/forReadMeFiles/old-land-main.png" width="500"/>
 
 ### New Main Layout
 
 <img src="https://github.com/MohamedAlaaEldin636/XyzReaderApp/blob/master/forReadMeFiles/new-port-main.png" height="500"/>
-<img src="https://github.com/MohamedAlaaEldin636/XyzReaderApp/blob/master/forReadMeFiles/new-land-main.png" height="500"/>
+<img src="https://github.com/MohamedAlaaEldin636/XyzReaderApp/blob/master/forReadMeFiles/new-land-main.png" width="500"/>
 
 ### Old Detail Layout
 
 <img src="https://github.com/MohamedAlaaEldin636/XyzReaderApp/blob/master/forReadMeFiles/old-port-detail.png" height="500"/>
-<img src="https://github.com/MohamedAlaaEldin636/XyzReaderApp/blob/master/forReadMeFiles/old-land-detail.png" height="500"/>
+<img src="https://github.com/MohamedAlaaEldin636/XyzReaderApp/blob/master/forReadMeFiles/old-land-detail.png" width="500"/>
 
 ### New Detail Layout
 
 <img src="https://github.com/MohamedAlaaEldin636/XyzReaderApp/blob/master/forReadMeFiles/new-port-detail.png" height="500"/>
 <img src="https://github.com/MohamedAlaaEldin636/XyzReaderApp/blob/master/forReadMeFiles/new-port-detail-2.png" height="500"/>
-<img src="https://github.com/MohamedAlaaEldin636/XyzReaderApp/blob/master/forReadMeFiles/new-land-detail.png" height="500"/>
+<img src="https://github.com/MohamedAlaaEldin636/XyzReaderApp/blob/master/forReadMeFiles/new-land-detail.png" width="500"/>
 
 ## Why this Project?
 This project gives you an opportunity to improve an app’s design, a vital skill for building apps users will love. It also replicates a common developer task of updating and changing an app's design as new standards are released.
