@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <integer name="list_number_of_columns">4</integer>
+
+    <item name="detail_image_weight" format="float" type="integer">1.5</item>
 </resources>

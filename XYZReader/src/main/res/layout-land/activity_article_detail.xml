@@ -40,9 +40,9 @@
 
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
 
-            app:contentInsetStart="72dp"
+            app:contentInsetStart="@dimen/detail_toolbar_content_inset_start"
 
-            android:elevation="4dp"
+            android:elevation="@dimen/detail_toolbar_elevation"
             tools:ignore="UnusedAttribute"/>
 
         <LinearLayout
@@ -54,14 +54,16 @@
                 android:id="@+id/expandedToolBarImageView"
 
                 android:layout_width="0dp"
-                android:layout_weight="1"
+                android:layout_weight="@integer/detail_image_weight"
                 android:layout_height="match_parent"
 
                 android:scaleType="centerInside"
 
-                android:layout_marginStart="8dp"
-                android:layout_marginBottom="8dp"
-                android:layout_marginTop="8dp"/>
+                android:layout_marginStart="@dimen/detail_expanded_image_margin"
+                android:layout_marginBottom="@dimen/detail_expanded_image_margin"
+                android:layout_marginTop="@dimen/detail_expanded_image_margin"
+
+                android:contentDescription="@string/detail_expanded_image"/>
 
             <android.support.v4.widget.NestedScrollView
                 android:layout_width="0dp"
@@ -70,10 +72,10 @@
 
                 android:fillViewport="true"
                 android:scrollbars="none"
-                app:behavior_overlapTop="120dp"
+                app:behavior_overlapTop="@dimen/detail_nested_scroll_overlap"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"
 
-                android:layout_margin="8dp">
+                android:layout_margin="@dimen/detail_nested_scroll_margin">
 
                 <android.support.v7.widget.CardView
                     android:id="@+id/cardView"
@@ -82,9 +84,9 @@
 
                     app:cardBackgroundColor="@android:color/white"
 
-                    android:paddingBottom="8dp"
+                    android:paddingBottom="@dimen/detail_card_view_padding"
 
-                    android:elevation="8dp"
+                    android:elevation="@dimen/detail_card_view_elevation"
                     tools:ignore="UnusedAttribute">
 
                     <LinearLayout
@@ -102,11 +104,11 @@
                             android:textColor="@color/almost_black"
 
                             tools:text="by someone"
-                            android:padding="8dp"/>
+                            android:padding="@dimen/detail_inner_text_views_padding"/>
 
                         <View
-                            android:layout_width="75dp"
-                            android:layout_height="2dp"
+                            android:layout_width="@dimen/horizontal_line_width"
+                            android:layout_height="@dimen/horizontal_line_height"
                             android:background="@color/deepOrangeColorPrimaryDark700"
                             android:layout_gravity="center" />
 
@@ -120,7 +122,7 @@
                             android:textColor="@android:color/black"
 
                             tools:text="I am the content body"
-                            android:padding="8dp"/>
+                            android:padding="@dimen/detail_inner_text_views_padding"/>
 
                     </LinearLayout>
 
@@ -137,7 +139,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
-        android:layout_margin="16dp"
+        android:layout_margin="@dimen/detail_fab_margin"
 
         android:src="@drawable/ic_share"
 

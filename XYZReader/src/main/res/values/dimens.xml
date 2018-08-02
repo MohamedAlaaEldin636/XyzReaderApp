@@ -25,4 +25,18 @@
     <dimen name="up_button_elevation">6dp</dimen>
     <dimen name="up_button_padding">16dp</dimen>
 
+    <!-- activity_article_detail.xml -->
+    <dimen name="collapsing_toolbar_height">300dp</dimen>
+    <dimen name="detail_toolbar_content_inset_start">72dp</dimen>
+    <dimen name="detail_toolbar_elevation">4dp</dimen>
+    <dimen name="detail_expanded_image_margin">8dp</dimen>
+    <dimen name="detail_nested_scroll_overlap">120dp</dimen>
+    <dimen name="detail_nested_scroll_margin">16dp</dimen>
+    <dimen name="detail_card_view_padding">8dp</dimen>
+    <dimen name="detail_card_view_elevation">8dp</dimen>
+    <dimen name="detail_inner_text_views_padding">8dp</dimen>
+    <dimen name="horizontal_line_width">75dp</dimen>
+    <dimen name="horizontal_line_height">2dp</dimen>
+    <dimen name="detail_fab_margin">16dp</dimen>
+
 </resources>

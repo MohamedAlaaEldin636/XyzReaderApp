@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- activity_article_detail.xml -->
+    <dimen name="detail_nested_scroll_margin">8dp</dimen>
+</resources>
