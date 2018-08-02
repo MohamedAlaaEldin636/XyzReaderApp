@@ -22,4 +22,7 @@
     <!-- activity_article_detail.xml -->
     <string name="detail_expanded_image">Image</string>
 
+    <!-- Article Detail Activity -->
+    <string name="detail_snack_bar_helper_note">Note scroll down to see more text</string>
+
 </resources>
