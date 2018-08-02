@@ -2,9 +2,9 @@
 <android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/rootViewCoordinatorLayout">
 
     <android.support.design.widget.AppBarLayout
@@ -20,7 +20,9 @@
             app:expandedTitleGravity="center"
             app:expandedTitleTextAppearance="@style/TextAppearanceOneLineDisplay1"
 
-            app:layout_scrollFlags="scroll|exitUntilCollapsed"/>
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+        </android.support.design.widget.CollapsingToolbarLayout>
 
     </android.support.design.widget.AppBarLayout>
 
@@ -55,7 +57,11 @@
                 android:layout_weight="1"
                 android:layout_height="match_parent"
 
-                android:scaleType="centerInside"/>
+                android:scaleType="centerInside"
+
+                android:layout_marginStart="8dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"/>
 
             <android.support.v4.widget.NestedScrollView
                 android:layout_width="0dp"
@@ -136,5 +142,35 @@
         android:src="@drawable/ic_share"
 
         android:layout_gravity="bottom|end"/>
+
+    <ImageView
+        android:id="@+id/upButton"
+        android:layout_width="wrap_content"
+        android:layout_height="?actionBarSize"
+
+        android:src="@drawable/ic_white_arrow_back_24px"
+
+        android:paddingStart="@dimen/up_button_padding"
+        android:paddingEnd="@dimen/up_button_padding"
+
+        android:contentDescription="@string/up_button"
+
+        android:elevation="@dimen/up_button_elevation"
+        tools:ignore="UnusedAttribute" />
+
+    <FrameLayout
+        android:id="@+id/loadingFrameLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/white"
+
+        android:visibility="gone">
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"/>
+
+    </FrameLayout>
 
 </android.support.design.widget.CoordinatorLayout>
