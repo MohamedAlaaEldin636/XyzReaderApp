@@ -5,6 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+    <!--
+                               VIP Note
+     1- No need for coordinator layout here, it's better in the
+            detail activity.
+     2- No need for AppBarLayout and better as well in the detail activity.
+     -->
 
     <!-- Regular spec from design guidelines is from left
          16 dp space

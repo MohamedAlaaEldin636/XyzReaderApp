@@ -7,6 +7,10 @@
 
     <!-- list_item_article_2.xml -->
     <dimen name="item_margin">4dp</dimen>
+    <dimen name="item_image_height">200dp</dimen>
+    <dimen name="item_text_border_margin">16dp</dimen>
+    <dimen name="item_text_relative_text_margin">4dp</dimen>
+    <dimen name="item_card_view_elevation">2dp</dimen>
 
     <!-- detail -->
     <dimen name="detail_title_text_size">32sp</dimen>
