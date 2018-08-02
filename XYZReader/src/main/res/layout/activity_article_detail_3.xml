@@ -12,10 +12,12 @@
 
         android:src="@drawable/ic_white_arrow_back_24px"
 
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
+        android:paddingStart="@dimen/up_button_padding"
+        android:paddingEnd="@dimen/up_button_padding"
 
-        android:elevation="6dp"
+        android:contentDescription="@string/up_button"
+
+        android:elevation="@dimen/up_button_elevation"
         tools:ignore="UnusedAttribute" />
 
     <android.support.v4.view.ViewPager

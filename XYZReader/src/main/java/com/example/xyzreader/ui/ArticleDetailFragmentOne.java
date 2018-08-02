@@ -1,27 +1,22 @@
 package com.example.xyzreader.ui;
 
+import android.annotation.SuppressLint;
 import android.app.LoaderManager;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.Rect;
 import android.graphics.Typeface;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.ShareCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.graphics.Palette;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.format.DateUtils;
-import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,8 +24,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.ImageLoader;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
@@ -50,6 +43,7 @@ import java.util.GregorianCalendar;
  * Created by Mohamed on 8/2/2018.
  *
  */
+@SuppressLint("SimpleDateFormat")
 public class ArticleDetailFragmentOne extends android.app.Fragment implements
         LoaderManager.LoaderCallbacks<Cursor> {
     private static final String TAG = "ArticleDetFragOne";
@@ -77,6 +71,12 @@ public class ArticleDetailFragmentOne extends android.app.Fragment implements
     public ArticleDetailFragmentOne() {
     }
 
+    /**
+     * Note, we used the other newInstance with title instead of the title, due to the following flow
+     * If we launch this activity before the refresh of the service ends in ArticleListActivity
+     * an error will be thrown due to change of id of database rows.
+     */
+    @SuppressWarnings("unused")
     public static ArticleDetailFragmentOne newInstance(long itemId) {
         Bundle arguments = new Bundle();
         arguments.putLong(ARG_ITEM_ID, itemId);
@@ -266,17 +266,10 @@ public class ArticleDetailFragmentOne extends android.app.Fragment implements
             return;
         }
 
-        Log.e("very", "CALLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLED + " + cursor.getCount() + "\nisaAdded == " + isAdded());
-
         mCursor = cursor;
         if (mCursor != null){
             mCursor.moveToFirst();
         }
-        /*if (mCursor != null && !mCursor.moveToFirst()) {
-            Log.e(TAG, "Error reading item detail cursor");
-            mCursor.close();
-            mCursor = null;
-        }*/
 
         bindViews();
     }

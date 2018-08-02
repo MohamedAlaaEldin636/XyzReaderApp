@@ -215,7 +215,7 @@ public class ArticleListActivity extends AppCompatActivity implements
             return mCursor.getLong(ArticleLoader.Query._ID);
         }
 
-        public String getTitleFrom(int position){
+        String getTitleFrom(int position){
             mCursor.moveToPosition(position);
             return mCursor.getString(ArticleLoader.Query.TITLE);
         }

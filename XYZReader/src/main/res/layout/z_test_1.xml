@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/rootViewCoordinatorLayout">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp">
+
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/collapsingToolBar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+            app:title=""
+            app:expandedTitleGravity="center"
+            app:expandedTitleTextAppearance="@style/TextAppearanceOneLineDisplay1"
+
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"/>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolBar"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+
+            android:background="?colorPrimary"
+
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+
+            app:contentInsetStart="72dp"
+
+            android:elevation="4dp"
+            tools:ignore="UnusedAttribute"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/expandedToolBarImageView"
+
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+
+                android:scaleType="centerInside"/>
+
+            <android.support.v4.widget.NestedScrollView
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_height="match_parent"
+
+                android:fillViewport="true"
+                android:scrollbars="none"
+                app:behavior_overlapTop="120dp"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+
+                android:layout_margin="8dp">
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/cardView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+
+                    app:cardBackgroundColor="@android:color/white"
+
+                    android:paddingBottom="8dp"
+
+                    android:elevation="8dp"
+                    tools:ignore="UnusedAttribute">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/byTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+
+                            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                            android:textColor="@color/almost_black"
+
+                            tools:text="by someone"
+                            android:padding="8dp"/>
+
+                        <View
+                            android:layout_width="75dp"
+                            android:layout_height="2dp"
+                            android:background="@color/deepOrangeColorPrimaryDark700"
+                            android:layout_gravity="center" />
+
+                        <TextView
+                            android:id="@+id/bodyTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="start"
+
+                            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                            android:textColor="@android:color/black"
+
+                            tools:text="I am the content body"
+                            android:padding="8dp"/>
+
+                    </LinearLayout>
+
+                </android.support.v7.widget.CardView>
+
+            </android.support.v4.widget.NestedScrollView>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/shareFab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_margin="16dp"
+
+        android:src="@drawable/ic_share"
+
+        android:layout_gravity="bottom|end"/>
+
+</android.support.design.widget.CoordinatorLayout>

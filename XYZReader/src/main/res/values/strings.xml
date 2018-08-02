@@ -16,4 +16,7 @@
     <!-- list_item_article_2.xml -->
     <string name="thumbnail_image_view_content_description">Image</string>
 
+    <!-- activity_article_detail_3.xml -->
+    <string name="up_button">Up Button</string>
+
 </resources>
