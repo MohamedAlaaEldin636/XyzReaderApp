@@ -37,7 +37,7 @@ public class ColorUtils {
         return value;
     }
 
-    private static boolean isBrightColor(int color) {
+    public static boolean isBrightColor(int color) {
         if (android.R.color.transparent == color)
             return true;
 

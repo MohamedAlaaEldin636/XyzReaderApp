@@ -4,10 +4,16 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
+import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.Toolbar;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.example.xyzreader.R;
 
 import java.util.ArrayList;
 
@@ -70,6 +76,24 @@ public class GeneralAppHelper {
                     header.setTextColor(colorOfHeader);
 
                     subHeader.setTextColor(colorOfSubHeader);
+                }catch (Exception e){
+                    // In case of any exception occurred.
+                }
+            }
+        });
+    }
+
+    public static void setBackgroundColor(final Bitmap bitmap,
+                                          final CoordinatorLayout coordinatorLayout,
+                                          final int defaultColor){
+        new Palette.Builder(bitmap).generate(new Palette.PaletteAsyncListener() {
+            @Override
+            public void onGenerated(@NonNull Palette palette) {
+                int backgroundColor = palette.getVibrantColor(defaultColor);
+                backgroundColor = palette.getDominantColor(backgroundColor);
+
+                try {
+                    coordinatorLayout.setBackgroundColor(backgroundColor);
                 }catch (Exception e){
                     // In case of any exception occurred.
                 }

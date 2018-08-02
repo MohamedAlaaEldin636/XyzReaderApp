@@ -117,8 +117,6 @@ public class ArticleListActivity extends AppCompatActivity implements
     @Override
     public void onRefresh() {
         refresh();
-
-        //getLoaderManager().initLoader(0, null, this);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -183,8 +181,6 @@ public class ArticleListActivity extends AppCompatActivity implements
             }
         }
 
-        /*Adapter adapter = new Adapter(cursor);
-        adapter.setHasStableIds(true);*/
         CustomAdapter customAdapter = new CustomAdapter(cursor);
         customAdapter.setHasStableIds(true);
 
@@ -192,7 +188,7 @@ public class ArticleListActivity extends AppCompatActivity implements
         GridLayoutManager layoutManager = new GridLayoutManager(
                 this, columnCount, LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(layoutManager);
-        mRecyclerView.setAdapter(customAdapter/*adapter*/);
+        mRecyclerView.setAdapter(customAdapter);
     }
 
     @Override
@@ -219,6 +215,11 @@ public class ArticleListActivity extends AppCompatActivity implements
             return mCursor.getLong(ArticleLoader.Query._ID);
         }
 
+        public String getTitleFrom(int position){
+            mCursor.moveToPosition(position);
+            return mCursor.getString(ArticleLoader.Query.TITLE);
+        }
+
         @NonNull
         @Override
         public CustomViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -230,8 +231,10 @@ public class ArticleListActivity extends AppCompatActivity implements
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    startActivity(new Intent(Intent.ACTION_VIEW,
-                            ItemsContract.Items.buildItemUri(getItemId(holder.getAdapterPosition()))));
+                    Intent intent = new Intent(Intent.ACTION_VIEW,
+                            ItemsContract.Items.buildItemUri(getItemId(holder.getAdapterPosition())));
+                    intent.putExtra(ArticleDetailActivityOne.INTENT_KEY_TITLE, getTitleFrom(holder.getAdapterPosition()));
+                    startActivity(intent);
                 }
             });
 

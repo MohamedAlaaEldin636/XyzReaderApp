@@ -31,4 +31,16 @@
         <item name="colorAccent">@color/cyanAccent200</item>
     </style>
 
+
+
+
+    <style name="TextAppearanceBlueDisplay1" parent="TextAppearance.AppCompat.Display1">
+        <item name="android:textColor">#ff0b0b</item>
+    </style>
+    <style name="TextAppearanceOneLineDisplay1" parent="TextAppearance.AppCompat.Large">
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
 </resources>
