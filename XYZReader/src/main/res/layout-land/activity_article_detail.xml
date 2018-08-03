@@ -9,7 +9,9 @@
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp">
+        android:layout_height="0dp"
+        android:elevation="@dimen/app_bar_elevation"
+        tools:ignore="UnusedAttribute">
 
         <android.support.design.widget.CollapsingToolbarLayout
             android:id="@+id/collapsingToolBar"
@@ -143,7 +145,10 @@
 
         android:src="@drawable/ic_share"
 
-        android:layout_gravity="bottom|end"/>
+        android:layout_gravity="bottom|end"
+
+        android:elevation="@dimen/fab_elevation"
+        tools:ignore="UnusedAttribute" />
 
     <ImageView
         android:id="@+id/upButton"

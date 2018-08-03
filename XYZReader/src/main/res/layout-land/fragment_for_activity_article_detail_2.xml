@@ -9,7 +9,9 @@
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp">
+        android:layout_height="0dp"
+        android:elevation="@dimen/app_bar_elevation"
+        tools:ignore="UnusedAttribute">
 
         <android.support.design.widget.CollapsingToolbarLayout
             android:id="@+id/collapsingToolBar"
@@ -59,7 +61,9 @@
 
                 android:layout_marginStart="8dp"
                 android:layout_marginBottom="8dp"
-                android:layout_marginTop="8dp"/>
+                android:layout_marginTop="8dp"
+
+                android:contentDescription="@string/detail_expanded_image"/>
 
             <android.support.v4.widget.NestedScrollView
                 android:layout_width="0dp"
@@ -139,6 +143,9 @@
 
         android:src="@drawable/ic_share"
 
-        android:layout_gravity="bottom|end"/>
+        android:layout_gravity="bottom|end"
+
+        android:elevation="@dimen/fab_elevation"
+        tools:ignore="UnusedAttribute" />
 
 </android.support.design.widget.CoordinatorLayout>
